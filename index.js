@@ -2,7 +2,7 @@ const API_KEY = "412fa27fcbeb4a506b397b90dd6302e1"
 
 function handleFormSubmit(event) {
   event.preventDefault();
-  event && event.stopPropagation();
+  event.stopPropagation && event.stopPropagation();
   const city = document.getElementById("city").value;
   fetchCurrentWeather(city);
   fetchFiveDayForecast(city);
