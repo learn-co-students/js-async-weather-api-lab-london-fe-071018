@@ -10,7 +10,7 @@ function handleFormSubmit(event) {
 }
 
 function fetchCurrentWeather(city) {
-  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}&units=metric`)
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}`)
     .then(r=>r.json())
     .then(r=>displayCurrentWeather(r))
     .catch(e=>console.log(e));
@@ -26,7 +26,7 @@ function displayCurrentWeather(json) {
 
 
 function fetchFiveDayForecast(city) {
-  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${API_KEY}&units=metric`)
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${API_KEY}`)
     .then(r=>r.json())
     .then(r=>displayFiveDayForecast(r))
     .catch(e=>console.log(e));
