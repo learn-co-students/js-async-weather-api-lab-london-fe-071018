@@ -27,7 +27,10 @@ function displayCurrentWeather(json) {
 function fetchFiveDayForecast(city) {
   fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${API_KEY}&units=metric`)
     .then(r=>r.json())
-    .then(r=>displayFiveDayForecast(r))
+    .then(r=>{
+      displayFiveDayForecast(r);
+      createChart(r);
+    })
     .catch(e=>console.log(e));
 }
 
@@ -37,31 +40,30 @@ function displayFiveDayForecast(json) {
   json.list.forEach(forecast => aside.innerHTML += `<div>${forecast.dt_txt}: ${forecast.main && forecast.main.temp} - ${forecast.main && forecast.main.humidity}</div>`);
 }
 
+const colourByRange=(min, max, value)=>{
+  const range = max - min;
+  return `${(value - min) / range * 255}, ${255 - (value - min) / range * 255}, 128`;
+}
+
 function createChart(json) {
   const ctx = document.getElementById("WeatherChart").getContext('2d');
+  const tempMinMax = json.list.reduce((acc,e)=>!e.main ? acc : {
+    min: Math.min(acc.min, e.main.temp),
+    max: Math.max(acc.min, e.main.temp)
+  },
+    {min: +Infinity, max: -Infinity}
+  );
+  const range = tempMinMax.max - tempMinMax.min;
+  console.log(tempMinMax, range);
   const myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: json.list.map(e=>e.dt_txt),
           datasets: [{
-              label: '# of Votes',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
-                  'rgba(54, 162, 235, 0.2)',
-                  'rgba(255, 206, 86, 0.2)',
-                  'rgba(75, 192, 192, 0.2)',
-                  'rgba(153, 102, 255, 0.2)',
-                  'rgba(255, 159, 64, 0.2)'
-              ],
-              borderColor: [
-                  'rgba(255,99,132,1)',
-                  'rgba(54, 162, 235, 1)',
-                  'rgba(255, 206, 86, 1)',
-                  'rgba(75, 192, 192, 1)',
-                  'rgba(153, 102, 255, 1)',
-                  'rgba(255, 159, 64, 1)'
-              ],
+              label: 'Average Temperature',
+              data: json.list.map(e=>e.main && e.main.temp),
+              backgroundColor: json.list.map(e=>e.main && `rgba(${colourByRange(tempMinMax.min, tempMinMax.max, e.main.temp)}, 0.2)`),
+              borderColor: json.list.map(e=>e.main && `rgba(${colourByRange(tempMinMax.min, tempMinMax.max, e.main.temp)}, 1)`),
               borderWidth: 1
           }]
       },
@@ -79,4 +81,5 @@ function createChart(json) {
 
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("submit").addEventListener("click", handleFormSubmit);
+  createChart({list: []});
 })
