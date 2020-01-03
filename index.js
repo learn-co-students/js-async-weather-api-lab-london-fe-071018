@@ -1,24 +1,41 @@
-const API_KEY = "YOUR API KEY"
+//const API_KEY = "YOUR API KEY"
+const API_KEY = "f5c69460eff30c7c064693b7d32dc32a"
 
 function handleFormSubmit(event) {
-  //handle submit event
+  event.preventDefault();
+  event.stopPropagation && event.stopPropagation();
+  const city = document.getElementById("city").value.replace(/ /g, "+");
+  fetchCurrentWeather(city);
+  fetchFiveDayForecast(city);
 }
 
 function fetchCurrentWeather(city) {
-  //fetch current weather based on city
+  fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&APPID=${API_KEY}`)
+    .then(r=>r.json())
+    .then(r=>displayCurrentWeather(r))
+    .catch(e=>console.log(e));
 }
 
 function displayCurrentWeather(json) {
-  //render current weather data to the DOM using provided IDs and json from API
+  document.getElementById("temp").innerHTML = json.main && json.main.temp;
+  document.getElementById("low").innerHTML = json.main && json.main.temp_min;
+  document.getElementById("high").innerHTML = json.main && json.main.temp_max;
+  document.getElementById("humidity").innerHTML = json.main && json.main.humidity;
+  document.getElementById("cloudCover").innerHTML = json.clouds && json.clouds.all;
 }
 
 
 function fetchFiveDayForecast(city) {
-  //fetch five day forecast data based on city
+  fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=${API_KEY}`)
+    .then(r=>r.json())
+    .then(r=>displayFiveDayForecast(r))
+    .catch(e=>console.log(e));
 }
 
 function displayFiveDayForecast(json) {
-  //render five day forecast data to the DOM using provided IDs and json from API
+  const aside = document.getElementsByTagName("aside")[0];
+  while (aside.firstChild) aside.removeChild(aside.firstChild);
+  json.list.forEach(forecast => aside.innerHTML += `<div>${forecast.dt_txt}: ${forecast.main && forecast.main.temp} - ${forecast.main && forecast.main.humidity}</div>`);
 }
 
 function createChart(json) {
@@ -26,5 +43,5 @@ function createChart(json) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  //add event listener here for form submission
+  document.getElementById("submit").addEventListener("click", handleFormSubmit);
 })
