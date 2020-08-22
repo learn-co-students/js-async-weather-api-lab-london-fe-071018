@@ -2,17 +2,40 @@
 <head>
   <title>Weather App</title>
   <script src="index.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+   <script src="index.js"></script>
   <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 
   <form id="cityForm" action="">
     <input type="text" placeholder="Enter city" id="city"/>
-    <input type="submit"/>
+    <input type="submit" id="submit"/>
+      <i class="material-icons">search</i><input type="text" placeholder="Show me the weather in... city" id="city"/>
+     <input type="submit" id="button"/>
   </form>
 
   <h2>Today</h2>
+    <section id = "today-card">
+     
+   </section>
+     <span id = "map">1</span>
+     <div id = "weather-card">
+        <div class ="weather-row">
+         <div>
+           <span id="temp"></span>
+         </div>
+         <div class = "weather-info">Temperature</div>
+       </div>
+       <div class ="weather-row">
+         <div>
+          <span id='humidity'></span>
+         </div>
+         <div class = "weather-info">Humidity</div>
+        </div> 
+     </div>
   <section id="today">
     <table>
       <tr>
@@ -63,7 +86,19 @@
 
   <h2>Five Day Forcast</h2>
   <aside>
-
+  <ul>
+       <li>
+         <div>
+           <p id="fiveDayDateTime"></p>
+         </div>
+       </li>
+       <li>
+         <div id="fiveDayTemp"></div>
+       </li>
+        <li>
+         <div id="fiveDayHumidity"></div>
+       </li>
+     </ul>
   </aside>
 
 

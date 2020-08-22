@@ -2,17 +2,46 @@ html, body {
   margin: 0;
   padding: 0;
   background-color: lightblue;
+    background-color: #ededed;
+ }
+
+ #cityForm {
+   background-color: #000000;
+   border-color: #000000;
 }
 
 form {
-  margin: 10px;
+  margin: 0px;
 }
 form * {
   margin-left: 30%;
   font-size: 150%;
   display: block;
-  width: 40%;
+    background-color: #000000;
+   color: white;
+   border-color: #000000;
+   padding-top: 20px;
+   padding-left: 5px;
+   padding-bottom: 20px;
+ }
+
+{
+   margin-left: 10%;
 }
+
+ #city {
+   width: 40%;
+ }
+
+ #button {
+   text-align: left;
+ } 
+
+ input::placeholder {
+   color: grey;
+   padding-left: 5px;
+   font-size: 18px;
+ }
 
 h2 {
   text-align: center;
